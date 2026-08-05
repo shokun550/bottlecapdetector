@@ -11,7 +11,7 @@ import geometry_msgs.msg
 class BottleCapDetector:
     def __init__(self):
         rospy.init_node('bottle_cap_detector', anonymous=True)
-        rospy.loginfo("🚀 Bottle Cap Detector started")
+        rospy.loginfo("Bottle Cap Detector started")
 
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.image_callback)
@@ -27,7 +27,7 @@ class BottleCapDetector:
         try:
             cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         except Exception as e:
-            rospy.logerr(f"❌ CvBridge error: {e}")
+            rospy.logerr(f"CvBridge error: {e}")
             return
 
         h, w = cv_image.shape[:2]
@@ -82,7 +82,7 @@ class BottleCapDetector:
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
                 )
 
-                rospy.loginfo(f"✅ Bottle cap detected: X={pos_x:.3f} Y={pos_y:.3f} m")
+                rospy.loginfo(f"Bottle cap detected: X={pos_x:.3f} Y={pos_y:.3f} m")
 
                 #TF
                 t = geometry_msgs.msg.TransformStamped()
@@ -99,7 +99,7 @@ class BottleCapDetector:
                 self.br.sendTransform(t)
                 break
         else:
-            rospy.loginfo("⚠️ No bottle cap detected")
+            rospy.loginfo("No bottle cap detected")
 
         cv2.imshow("Bottle Cap Detector EIEI", undistorted)
         cv2.waitKey(1)
